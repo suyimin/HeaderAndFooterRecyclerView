@@ -15,9 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xdroid.recyclerview.EndlessRecyclerOnScrollListener;
-import com.xdroid.recyclerview.ExStaggeredGridLayoutManager;
 import com.xdroid.recyclerview.HeaderAndFooterRecyclerViewAdapter;
-import com.xdroid.recyclerview.HeaderSpanSizeLookup;
 import com.xdroid.recyclerview.RecyclerViewUtils;
 import com.xdroid.recyclerview.sample.utils.NetworkUtils;
 import com.xdroid.recyclerview.sample.utils.RecyclerViewStateUtils;
@@ -70,8 +68,7 @@ public class EndlessStaggeredGridLayoutActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mHeaderAndFooterRecyclerViewAdapter);
 
         //setLayoutManager
-        ExStaggeredGridLayoutManager manager = new ExStaggeredGridLayoutManager (2, StaggeredGridLayoutManager.VERTICAL);
-        manager.setSpanSizeLookup(new HeaderSpanSizeLookup((HeaderAndFooterRecyclerViewAdapter) mRecyclerView.getAdapter(), manager.getSpanCount()));
+        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager (2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(manager);
 
         RecyclerViewUtils.setHeaderView(mRecyclerView, new SampleHeader(this));

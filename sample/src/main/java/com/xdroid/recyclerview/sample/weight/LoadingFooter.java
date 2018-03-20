@@ -49,7 +49,7 @@ public class LoadingFooter extends RelativeLayout {
         return mState;
     }
 
-    public void setState(State status ) {
+    public void setState(State status) {
         setState(status, true);
     }
 
@@ -152,6 +152,21 @@ public class LoadingFooter extends RelativeLayout {
     }
 
     public static enum State {
-        Normal/**正常*/, TheEnd/**加载到最底了*/, Loading/**加载中..*/, NetWorkError/**网络异常*/
+        /**
+         * 正常
+         */
+        Normal,
+        /**
+         * 加载到最底了
+         */
+        TheEnd,
+        /**
+         * 加载中..
+         */
+        Loading,
+        /**
+         * 网络异常
+         */
+        NetWorkError
     }
 }

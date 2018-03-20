@@ -69,13 +69,15 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 
     /**
      * 设置adapter
+     *
      * @param adapter
      */
     public void setAdapter(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
 
         if (adapter != null) {
-            if (!(adapter instanceof RecyclerView.Adapter))
+            if (!(adapter instanceof RecyclerView.Adapter)) {
                 throw new RuntimeException("your adapter must be a RecyclerView.Adapter");
+            }
         }
 
         if (mInnerAdapter != null) {
@@ -114,18 +116,20 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 
     /**
      * 返回第一个FoView
+     *
      * @return
      */
     public View getFooterView() {
-        return  getFooterViewsCount()>0 ? mFooterViews.get(0) : null;
+        return getFooterViewsCount() > 0 ? mFooterViews.get(0) : null;
     }
 
     /**
      * 返回第一个HeaderView
+     *
      * @return
      */
     public View getHeaderView() {
-        return  getHeaderViewsCount()>0 ? mHeaderViews.get(0) : null;
+        return getHeaderViewsCount() > 0 ? mHeaderViews.get(0) : null;
     }
 
     public void removeHeaderView(View view) {
@@ -172,17 +176,6 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
         int headerViewsCountCount = getHeaderViewsCount();
         if (position >= headerViewsCountCount && position < headerViewsCountCount + mInnerAdapter.getItemCount()) {
             mInnerAdapter.onBindViewHolder(holder, position - headerViewsCountCount);
-        } else {
-            ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
-
-            if(layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
-                ((StaggeredGridLayoutManager.LayoutParams) layoutParams).setFullSpan(true);
-            } else if (layoutParams == null && mLayoutManager instanceof StaggeredGridLayoutManager) {
-                StaggeredGridLayoutManager.LayoutParams lp = new StaggeredGridLayoutManager.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
-
-                lp.setFullSpan(true);
-                holder.itemView.setLayoutParams(lp);
-            }
         }
     }
 
@@ -200,7 +193,7 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
         } else if (headerViewsCountCount <= position && position < headerViewsCountCount + innerCount) {
 
             int innerItemViewType = mInnerAdapter.getItemViewType(position - headerViewsCountCount);
-            if(innerItemViewType >= Integer.MAX_VALUE / 2) {
+            if (innerItemViewType >= Integer.MAX_VALUE / 2) {
                 throw new IllegalArgumentException("your adapter's return value of getViewTypeCount() must < Integer.MAX_VALUE / 2");
             }
             return innerItemViewType + Integer.MAX_VALUE / 2;
@@ -231,6 +224,15 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 
         if (mLayoutManager == null && mRecyclerView != null) {
             mLayoutManager = mRecyclerView.getLayoutManager();
+        }
+
+        ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+        if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+            int headerViewsCountCount = getHeaderViewsCount();
+            int position = holder.getLayoutPosition();
+            boolean fullSpan = position < headerViewsCountCount || position >= headerViewsCountCount + mInnerAdapter.getItemCount();
+            StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
+            p.setFullSpan(fullSpan);
         }
     }
 }
